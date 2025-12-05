@@ -9,10 +9,3 @@ export interface CheeringState {
   count: number;
   level: number;
 }
-
-// Global definition for canvas-confetti library loaded via CDN
-declare global {
-  interface Window {
-    confetti: any;
-  }
-}

@@ -1,44 +1,21 @@
-import { GoogleGenAI } from "@google/genai";
-
-const getClient = () => {
-  const apiKey = process.env.API_KEY;
-  if (!apiKey) {
-    console.warn("API_KEY is missing in environment variables.");
-    return null;
-  }
-  return new GoogleGenAI({ apiKey });
-};
+// Pre-defined list of encouraging messages specifically for Subject 2
+const messages = [
+  "小娜，相信自己，你就是最棒的！倒车入库一把过，侧方停车如神助！🚗💨",
+  "稳住心态，离合踩好，今天你就是考场车神！🏆",
+  "深呼吸！所有的练习都不会白费，科目二必过！🌟",
+  "把车当成大玩具，离合稳一点，看点准一点，驾照向你招手！💯",
+  "别紧张，就像平时练车一样，压好离合，慢就是快！🐢",
+  "侧方停车记得打灯，出库不压线，满分拿下！✨",
+  "半坡起步不要慌，给点油门更有劲，小娜冲鸭！🦆",
+  "曲线行驶看车头，后视镜里找感觉，你可以的！👀",
+  "考试就是走过场，心态决定一切，你是最棒的司机！🌈",
+  "今天的天气都在为你加油，科目二，拿来吧你！🎉"
+];
 
 export const generateEncouragement = async (mood: string = 'funny'): Promise<string> => {
-  const ai = getClient();
+  // Simulate a small network delay for effect (optional, can be removed for instant response)
+  await new Promise(resolve => setTimeout(resolve, 300));
   
-  if (!ai) {
-    return "小娜，相信自己，你就是最棒的！倒车入库一把过，侧方停车如神助！🚗💨";
-  }
-
-  try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: `You are a super supportive best friend cheering up "Li Xiaona" (李小娜) for her Driving Test Subject 2 (科目二).
-      
-      Write a short, punchy, and warm encouraging message (max 40 words) in Chinese.
-      
-      Include specific references to Subject 2 challenges to make it real, such as:
-      - Controlling the clutch (离合)
-      - Watching the points (看点位)
-      - Not crossing the lines (不压线)
-      - Reverse parking (倒库)
-      
-      Tone: Enthusiastic, confident, slightly humorous or cute. Use emojis.
-      Example vibe: "Xiaona! Just treat the car like a big toy. Clutch steady, eyes sharp, pass is yours! 💯"`,
-      config: {
-        thinkingConfig: { thinkingBudget: 0 } 
-      }
-    });
-
-    return response.text?.trim() || "李小娜，稳住心态，离合踩好，今天你就是考场车神！🏆";
-  } catch (error) {
-    console.error("Error generating encouragement:", error);
-    return "李小娜，深呼吸！所有的练习都不会白费，科目二必过！🌟";
-  }
+  const randomIndex = Math.floor(Math.random() * messages.length);
+  return messages[randomIndex];
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import { CarAnimation } from './components/CarAnimation';
 import { TipsCarousel } from './components/TipsCarousel';
 import { generateEncouragement } from './services/geminiService';
@@ -38,15 +39,13 @@ const App: React.FC = () => {
     setLuckLevel(prev => Math.min(prev + 10, 100));
 
     // Fire confetti
-    if (window.confetti) {
-      window.confetti({
-        particleCount: 80,
-        spread: 60,
-        origin: { y: 0.7 },
-        colors: ['#3b82f6', '#ef4444', '#facc15', '#ffffff'],
-        disableForReducedMotion: true
-      });
-    }
+    confetti({
+      particleCount: 80,
+      spread: 60,
+      origin: { y: 0.7 },
+      colors: ['#3b82f6', '#ef4444', '#facc15', '#ffffff'],
+      disableForReducedMotion: true
+    });
 
     // Trigger phone vibration if available
     if (navigator.vibrate) {
@@ -60,8 +59,8 @@ const App: React.FC = () => {
     // Calculate position
     let clientX, clientY;
     if ('touches' in e) {
-       clientX = e.touches[0].clientX;
-       clientY = e.touches[0].clientY;
+       clientX = (e as React.TouchEvent).touches[0].clientX;
+       clientY = (e as React.TouchEvent).touches[0].clientY;
     } else {
        clientX = (e as React.MouseEvent).clientX;
        clientY = (e as React.MouseEvent).clientY;
@@ -162,7 +161,7 @@ const App: React.FC = () => {
           </AnimatePresence>
         </div>
 
-        {/* AI Message Card */}
+        {/* Message Card */}
         <div className="px-4 mb-6">
           <div className="bg-white/80 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-blue-50 relative group hover:shadow-lg transition-shadow">
             <div className="absolute -top-3 -right-3 bg-gradient-to-br from-yellow-400 to-orange-400 text-white p-2 rounded-full shadow-md transform group-hover:scale-110 transition-transform">
@@ -171,7 +170,7 @@ const App: React.FC = () => {
             
             <h3 className="text-indigo-300 text-[10px] font-black uppercase tracking-widest mb-3 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-ping"></span>
-              AI Coach Message
+              Encouragement
             </h3>
             
             <AnimatePresence mode="wait">
@@ -231,7 +230,7 @@ const App: React.FC = () => {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
                   className="absolute text-2xl font-black text-transparent bg-clip-text bg-gradient-to-t from-blue-600 to-cyan-400 drop-shadow-sm pointer-events-none font-cute whitespace-nowrap"
-                  style={{ left: 0, top: 0 }} // Position handled by motion initial
+                  style={{ left: 0, top: 0 }} 
                 >
                   {ft.text}
                 </motion.div>
